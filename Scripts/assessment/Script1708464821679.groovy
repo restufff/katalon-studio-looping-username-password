@@ -20,35 +20,27 @@ import com.kms.katalon.core.testdata.TestDataFactory
 import com.kms.katalon.core.testdata.TestData
 import com.github.javafaker.Faker
 
-def successfulLogin = false
 def faker = new Faker()
-def usernames = []
-def passwords = []
-def baseUrl = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
+def username1 = faker.name().username()
+def username2 = faker.name().username()
+def username3 = faker.name().username()
 
-int loop = 3
+def password1 = faker.hacker().verb()
+def password2 = faker.hacker().verb()
+def password3 = faker.hacker().verb()
 
-for (i = 1; i <= loop; i++) {
-    String user = faker.name().username()
-	
-    String passwordFake = faker.funnyName().name()
-    
-    usernames.add(user)
-    passwords.add(passwordFake)
-	
-	println(usernames)
-	println(passwords)
-}
+def successfulLogin = false
+def baseUrl = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/'
 
-usernames.add('Admin')
-passwords.add('admin123')
+def usernames = [username1, 'admin', username2, username3]
+def passwords = [password1, 'admin123', password2, password3]
 
-WebUI.openBrowser(baseUrl)
+WebUI.openBrowser(baseUrl+'login')
 
 for (int i = 0; i < usernames.size(); i++) {
     def username = usernames[i]
     def password = passwords[i]
-
+	
     WebUI.setText(findTestObject('Object Repository/inputTextUsername'), username)
     WebUI.setText(findTestObject('Object Repository/inputTextPassword'), password)
 
@@ -61,5 +53,5 @@ for (int i = 0; i < usernames.size(); i++) {
 }
 
 if (!successfulLogin) {
-    println("Tidak ada kombinasi username dan password yang berhasil.")
+    println("None of credentials is valid")
 }
